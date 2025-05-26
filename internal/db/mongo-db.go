@@ -16,6 +16,15 @@ type DatabaseConnection struct {
 	collection *mongo.Collection
 }
 
+func NewDatabaseConnection(access bool, uri string, client *mongo.Client, collection *mongo.Collection) *DatabaseConnection {
+	return &DatabaseConnection{
+		access:     access,
+		uri:        uri,
+		client:     client,
+		collection: collection,
+	}
+}
+
 func (db *DatabaseConnection) Connect() {
 	if db.access {
 		db.uri = os.Getenv("MONGODB_URI")
