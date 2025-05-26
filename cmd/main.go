@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/joho/godotenv"
+	"github.com/mauFade/web-crawler/internal/db"
 )
 
 func main() {
@@ -14,6 +15,9 @@ func main() {
 		fmt.Println("Error loading .env file")
 		webAccess = false
 	}
+
+	dbConn := db.NewDatabaseConnection(webAccess, "", nil, nil)
+	dbConn.Connect()
 
 	log.Println("Crawling completed successfully")
 }
