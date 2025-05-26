@@ -1,8 +1,10 @@
 package db
 
 import (
+	"context"
 	"os"
 
+	"github.com/mauFade/web-crawler/internal/models"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
@@ -25,5 +27,17 @@ func (db *DatabaseConnection) Connect() {
 
 		db.client = client
 		db.collection = db.client.Database("webCrawlerArchive").Collection("webpages")
+	}
+}
+
+func (db *DatabaseConnection) Disconnect() {
+	if db.access {
+		db.client.Disconnect(context.Background())
+	}
+}
+
+func (db *DatabaseConnection) SaveWebpage(webpage models.Webpage) {
+	if db.access {
+		db.collection.InsertOne(context.Background(), webpage)
 	}
 }
