@@ -27,5 +27,24 @@ func main() {
 
 	ticker := time.NewTicker(1 * time.Minute)
 
+	done := make(chan bool)
+	crawlerStats := models.NewCrawlerStats("0 0\n", "0 0\n", time.Now())
+
+	go func() {
+		for {
+			select {
+			case <-done:
+				return
+			case t := <-ticker.C:
+				crawlerStats.Update(crawledSet, queue, t)
+				crawlerStats.Print()
+			}
+		}
+	}()
+
+	queue.Enqueue(seed)
+	url := queue.Dequeue()
+	c := make(chan []byte)
+
 	log.Println("Crawling completed successfully")
 }
