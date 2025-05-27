@@ -36,7 +36,7 @@ func parseHTML(currUrl string, content []byte, q *models.Queue, crawled *models.
 	tokenCount := 0
 	pageContentLength := 0
 	body := false
-	webpage := models.Webpage{Url: currUrl, Title: "", Content: ""}
+	webpage := models.Webpage{Url: currUrl, Title: "", Content: "", CreatedAt: time.Now()}
 	for {
 		if z.Next() == html.ErrorToken || tokenCount > 500 {
 			if crawled.GetNumber() < 1000 {
