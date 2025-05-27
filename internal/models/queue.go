@@ -47,3 +47,7 @@ func (q *Queue) GetSize() int {
 
 	return q.Number
 }
+
+func (q *Queue) GetTotalQueued() int {
+	return q.TotalQueued
+}

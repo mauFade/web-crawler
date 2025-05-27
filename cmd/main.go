@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/mauFade/web-crawler/internal/db"
 	"github.com/mauFade/web-crawler/internal/models"
+	"github.com/mauFade/web-crawler/internal/utils"
 )
 
 func main() {
@@ -44,7 +44,33 @@ func main() {
 
 	queue.Enqueue(seed)
 	url := queue.Dequeue()
+	crawledSet.Add(url)
 	c := make(chan []byte)
 
-	log.Println("Crawling completed successfully")
+	go utils.FetchTopLevelPage(url, c)
+
+	content := <-c
+	utils.ParseHTML(url, content, queue, crawledSet)
+
+	for queue.GetSize() > 0 && crawledSet.GetNumber() < 5000 {
+		url := queue.Dequeue()
+		crawledSet.Add(url)
+		go utils.FetchTopLevelPage(url, c)
+		content := <-c
+
+		if len(content) == 0 {
+			continue
+		}
+
+		go utils.ParseHTML(url, content, queue, crawledSet)
+	}
+	ticker.Stop()
+	done <- true
+	dbConn.Disconnect()
+	fmt.Println("\n------------------CRAWLER STATS------------------")
+	fmt.Printf("Total queued: %d\n", queue.GetTotalQueued())
+	fmt.Printf("To be crawled (Queue) size: %d\n", queue.GetSize())
+	fmt.Printf("Crawled size: %d\n", crawledSet.GetNumber())
+	crawlerStats.Print()
+
 }

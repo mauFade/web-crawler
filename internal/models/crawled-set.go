@@ -1,10 +1,15 @@
 package models
 
 import (
+	"hash/fnv"
 	"sync"
-
-	"github.com/mauFade/web-crawler/internal/utils"
 )
+
+func hashUrl(url string) uint64 {
+	hash := fnv.New64a()
+	hash.Write([]byte(url))
+	return hash.Sum64()
+}
 
 type CrawledSet struct {
 	Data   map[uint64]bool
@@ -23,7 +28,7 @@ func (c *CrawledSet) Add(url string) {
 	c.Mutex.Lock()
 	defer c.Mutex.Unlock()
 
-	c.Data[utils.HashUrl(url)] = true
+	c.Data[hashUrl(url)] = true
 	c.Number++
 }
 
@@ -31,7 +36,7 @@ func (c *CrawledSet) Contains(url string) bool {
 	c.Mutex.RLock()
 	defer c.Mutex.RUnlock()
 
-	return c.Data[utils.HashUrl(url)]
+	return c.Data[hashUrl(url)]
 }
 
 func (c *CrawledSet) GetNumber() int {
