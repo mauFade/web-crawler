@@ -64,7 +64,6 @@ The crawler can be configured through environment variables:
 │   ├── db/              # Database connection and operations
 │   ├── models/          # Data models and structures
 │   └── utils/           # Utility functions
-├── Dockerfile           # Docker configuration
 ├── docker-compose.yml   # Docker Compose configuration
 ├── go.mod              # Go module file
 └── go.sum              # Go module checksum
