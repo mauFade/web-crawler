@@ -26,7 +26,7 @@ git clone https://github.com/mauFade/web-crawler.git
 cd web-crawler
 ```
 
-2. Create a `.env` file in the root directory (optional):
+2. Create a `.env` file in the root directory:
 
 ```bash
 MONGODB_URI=mongodb://localhost:27017
@@ -47,8 +47,6 @@ This will start both the web crawler MongoDB database in localhost.
 ```bash
 go run cmd/main.go
 ```
-
-#### (Note: create a .env file in the project root and add `MONGODB_URI="mongodb://localhost:27017"` to it.)
 
 ## Configuration
 
