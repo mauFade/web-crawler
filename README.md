@@ -42,21 +42,13 @@ MONGODB_URI=mongodb://localhost:27017
 docker-compose up --build
 ```
 
-This will start both the web crawler application and MongoDB in separate containers.
-
-### Running Locally
-
-1. Install dependencies:
-
-```bash
-go mod download
-```
-
-2. Run the application:
+This will start both the web crawler MongoDB database in localhost.
 
 ```bash
 go run cmd/main.go
 ```
+
+#### (Note: create a .env file in the project root and add `MONGODB_URI="mongodb://localhost:27017"` to it.)
 
 ## Configuration
 
@@ -97,7 +89,3 @@ The crawler provides real-time statistics including:
 - Current queue size
 - Number of crawled pages
 - Crawling rate
-
-## License
-
-This project is open source and available under the MIT License.
